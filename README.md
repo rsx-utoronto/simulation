@@ -12,3 +12,7 @@ Installation:
 *Navigate to localhost:3000 in your browser*
 
 
+Here's a demo of it working:
+![demo](demo/demo.png)
+
+
