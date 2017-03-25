@@ -1,9 +1,17 @@
 var express = require('express');
-let Rover = require('./rover');
+var _ = require('lodash');
+var Rover = require('./rover');
+var Obstacle = require('./obstacle');
+var utils = require('../common/utils');
 let cors = require('cors');
 
 let app = express();
-let rover = new Rover(10, 10)
+let rover = new Rover(10, 10);
+let obstacles = [new Obstacle([
+	{x: 10, y: 30},
+	{x: 40, y: 50},
+	{x: 20, y: 10}
+])]
 
 app.use(cors())
 
@@ -12,8 +20,9 @@ app.put('/drive/speed/:speed', (req, res) => {
 	res.sendStatus(200);
 })
 
+/* The interface is in degrees per second */
 app.put('/drive/pivot/:pivot', (req, res) => {
-	rover.pivot(parseFloat(req.params.pivot));
+	rover.pivot(utils.toRadians(parseFloat(req.params.pivot)));
 	res.sendStatus(200);
 })
 
@@ -24,6 +33,21 @@ app.put('/drive/stop', (req, res) => {
 
 app.get('/gps', (req, res) => {
 	res.json(rover.getGps());
+})
+
+app.get('/lidar', (req, res) => {
+	res.json(
+		_.zipObject(_.range(-30, 30), _.range(-30, 30).map(angle => {
+			return _.min(_.map(obstacles, obs => obs.getDistance(rover, utils.toRadians(angle) + rover.theta, 10)))
+		}))
+	);
+})
+
+/* ONLY USE FOR DRAWING */
+app.get('/private/obstacles', (req, res) => {
+	res.json(obstacles.map(
+		obstacle => obstacle.vertices.map(({x, y}) => utils.toGPS(x, y, utils.utias))
+	))
 })
 
 app.listen(8080, () => {
