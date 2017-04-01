@@ -9,22 +9,23 @@ class Obstacle {
 
 	// Returns the distance along the ray to its intersection with line, and Infinity otherwise
 	// sensorRange is the maximum sensitive range of the lidar
-	// angle is in degrees
+	// angle is in radians
 	getDistance(robot, angle, sensorRange) {
-		return _.min(_.map(this.vertices.slice(0, -1), (v, i) =>
+		distance = _.min(_.map(this.vertices.slice(0, -1), (v, i) =>
 			getLineIntersection(robot.x, robot.y,
 				robot.x + Math.cos(angle) * sensorRange, robot.y + Math.sin(angle) * sensorRange,
 				this.vertices[i].x, this.vertices[i].y,
 				this.vertices[i+1].x, this.vertices[i+1].y
 			)
 		))
+		return _.isFinite(distance) ? distance : -1;
 	}
 }
 
 // Modified version of http://stackoverflow.com/a/1968345/3080953 (detecting intersections between line segments)
 // handle case when det is zero
 // returns the distance to the intersection from p0_x, p0_y, i.e. the first point
-// returns a large number instead of Infinity because json doesn't handle Infinity.
+// returns NaN if there's no collision
 function getLineIntersection(p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y) {
 	let s1_x = p1_x - p0_x; s1_y = p1_y - p0_y; s2_x = p3_x - p2_x; s2_y = p3_y - p2_y;
 	let det = (-s2_x * s1_y + s1_x * s2_y);
@@ -37,7 +38,7 @@ function getLineIntersection(p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y) {
         // Collision detected
         return Math.sqrt(t * (s1_x * s1_x + s1_y * s1_y));
     }
-    return 1e6;
+    return Infinity;
 }
 
 module.exports = Obstacle;
