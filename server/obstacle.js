@@ -11,13 +11,13 @@ class Obstacle {
 	// sensorRange is the maximum sensitive range of the lidar
 	// angle is in radians
 	getDistance(robot, angle, sensorRange) {
-		distance = _.min(_.map(this.vertices.slice(0, -1), (v, i) =>
+		let distance = _.min(_.map(this.vertices.slice(0, -1), (v, i) =>
 			getLineIntersection(robot.x, robot.y,
 				robot.x + Math.cos(angle) * sensorRange, robot.y + Math.sin(angle) * sensorRange,
 				this.vertices[i].x, this.vertices[i].y,
 				this.vertices[i+1].x, this.vertices[i+1].y
 			)
-		))
+		));
 		return _.isFinite(distance) ? distance : -1;
 	}
 }
