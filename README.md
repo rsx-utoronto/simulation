@@ -8,15 +8,15 @@ Any other client simply needs to make API calls to `localhost:8080`. Multiple cl
 
 
 ### Installation:
-- git clone https://github.com/rsx-utoronto/simulation.git
-- npm install
-- cd server
-- node server.js
+- `git clone https://github.com/rsx-utoronto/simulation.git`
+- `npm install`
+- `npm install -g http-server`
+- `cd server`
+- `node server.js`
 
 *[Separate command line shell]*
-- cd frontend
-- http-server -p 3000
-*Navigate to localhost:3000 in your browser*
+- `http-server -p 3000`
+*Navigate to localhost:3000/frontend in your browser*
 
 
 ### API Documentation
