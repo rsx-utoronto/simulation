@@ -11,7 +11,7 @@ Any other client simply needs to make API calls to `localhost:8080`. Multiple cl
 - `git clone https://github.com/rsx-utoronto/simulation.git`
 - `npm install`
 - `npm install -g http-server`
-- `cd server`
+- `cd simulation/server`
 - `node server.js`
 
 *[Separate command line shell]*
