@@ -14,7 +14,7 @@ Any other client simply needs to make API calls to `localhost:8080`. Multiple cl
 - `cd simulation/server`
 - `node server.js`
 
-*[Separate command line shell]*
+*[Separate command line shell, in the simulation folder]*
 - `http-server -p 3000`
 *Navigate to localhost:3000/frontend in your browser*
 
