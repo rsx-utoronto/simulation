@@ -23,6 +23,18 @@ function render() {
 		//if (!_.isEmpty(c))
 			//console.log(c) // found an obstacle!
 	})
+    
+    fetch('/private/ball')
+    .then(response => response.json())
+    .then(response => {
+         let center = response.center
+         let radius = response.radius
+         ctx.beginPath();
+         ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI);
+         ctx.stroke();
+        ctx.fillStyle = 'yellow'
+         ctx.fill();
+    });
 
 	fetch('/gps/')
 	.then(response => response.json())
@@ -34,6 +46,7 @@ function render() {
 		ctx.fillStyle = 'rgba(255,255,255,0.03)';
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		ctx.fill();
+        
 
 		// draw obstacles
 		obstacles.forEach(obstacle => {
@@ -53,6 +66,7 @@ function render() {
 	});
 }
 
+$('#ebrake').addEventListener('click', () => fetch('/ebrake', {method:'PUT'}))
 $('#stop').addEventListener('click', () => fetch('/drive/stop', {method:'PUT'}))
 $('#backward').addEventListener('click', () => fetch('/drive/speed/-1', {method:'PUT'}))
 $('#forward').addEventListener('click', () => fetch('/drive/speed/1', {method:'PUT'}))

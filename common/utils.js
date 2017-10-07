@@ -13,6 +13,7 @@ function toGPS (x, y, origin) {
 	}
 }
 
+
 utias = {lat: -79.4655, lon: 43.7819};
 
 if (typeof(module) !== "undefined")
