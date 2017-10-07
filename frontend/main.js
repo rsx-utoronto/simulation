@@ -6,7 +6,7 @@ var ctx = canvas.getContext('2d');
 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 var initGPS, _obstacles;
-Promise.all(['gps', 'private/obstacles'].map(x => fetch(`http://localhost:8080/${x}`)))
+Promise.all(['/gps', '/private/obstacles'].map(_.unary(fetch)))
 .then(responses =>
 	Promise.all(responses.map(x => x.json())))
 .then(([gps, _obstacles]) => {
@@ -16,7 +16,7 @@ Promise.all(['gps', 'private/obstacles'].map(x => fetch(`http://localhost:8080/$
 .then(x => requestAnimationFrame(render));
 
 function render() {
-	fetch('http://localhost:8080/lidar')
+	fetch('/lidar')
 	.then(response => response.json())
 	.then(response => {
 		c = _.pickBy(response, (val, key) => val < 1e5)
@@ -24,7 +24,7 @@ function render() {
 			console.log(c) // found an obstacle!
 	})
 
-	fetch('http://localhost:8080/gps')
+	fetch('/gps')
 	.then(response => response.json())
 	.then(function(response) {
 		let dx = (response.lat - initGPS.lat) * 500000;
@@ -53,10 +53,10 @@ function render() {
 	});
 }
 
-$('#stop').addEventListener('click', () => fetch('http://localhost:8080/drive/stop', {method:'PUT'}))
-$('#backward').addEventListener('click', () => fetch('http://localhost:8080/drive/speed/-1', {method:'PUT'}))
-$('#forward').addEventListener('click', () => fetch('http://localhost:8080/drive/speed/1', {method:'PUT'}))
-$('#pivot-left').addEventListener('click', () => fetch('http://localhost:8080/drive/pivot/-20', {method:'PUT'}))
-$('#pivot-right').addEventListener('click', () => fetch('http://localhost:8080/drive/pivot/20', {method:'PUT'}))
+$('#stop').addEventListener('click', () => fetch('/drive/stop', {method:'PUT'}))
+$('#backward').addEventListener('click', () => fetch('/drive/speed/-1', {method:'PUT'}))
+$('#forward').addEventListener('click', () => fetch('/drive/speed/1', {method:'PUT'}))
+$('#pivot-left').addEventListener('click', () => fetch('/drive/pivot/-20', {method:'PUT'}))
+$('#pivot-right').addEventListener('click', () => fetch('/drive/pivot/20', {method:'PUT'}))
 
 

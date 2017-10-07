@@ -50,6 +50,9 @@ app.get('/private/obstacles', (req, res) => {
 	))
 })
 
+// serve static files
+app.use(express.static('.'));
+
 app.listen(8080, () => {
 	console.log('App is listening on port 8080')
 })
