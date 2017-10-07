@@ -3,7 +3,7 @@ var _ = require('lodash');
 var Rover = require('./rover');
 var Obstacle = require('./obstacle');
 var utils = require('../common/utils');
-let cors = require('cors');
+var cors = require('cors');
 
 let app = express();
 let rover = new Rover(10, 10);
@@ -11,7 +11,7 @@ let obstacles = [new Obstacle([
 	{x: 10, y: 30},
 	{x: 40, y: 50},
 	{x: 20, y: 10}
-])]
+])];
 
 app.use(cors())
 
@@ -22,8 +22,13 @@ app.put('/drive/speed/:speed', (req, res) => {
 
 /* The interface is in degrees per second */
 app.put('/drive/speed/:speed0/:speed1', (req, res) => {
-    var turningSpeed = parseFloat(req.params.speed0) - parseFloat(req.params.speed1);
-	rover.turn(utils.toRadians(parseFloat(turningSpeed)));
+    var leftWheelSpeed = parseFloat(req.params.speed0);
+    var rightWheelSpeed = parseFloat(req.params.speed1);
+    var forwardVelocity = 0.5 * (leftWheelSpeed + rightWheelSpeed);  
+    var turningSpeed = 20*(leftWheelSpeed - rightWheelSpeed);
+    rover.drive(forwardVelocity);
+	rover.turn(utils.toRadians(turningSpeed));
+    
 	res.sendStatus(200);
 })
 

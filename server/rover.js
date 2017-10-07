@@ -29,6 +29,7 @@ class Rover {
 		this.speed = 0;
 		this.vtheta = speed;
 	}
+    
     turn(turningSpeed) {
         this.vtheta = turningSpeed;
     }
