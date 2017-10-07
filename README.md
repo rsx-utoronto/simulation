@@ -13,6 +13,8 @@ Any other client simply needs to make API calls to `localhost:8080`. Multiple cl
 - `cd simulation`
 - `node server/server.js`
 
+In your browser, navigate to `localhost:8080/frontend`
+
 
 ### API Documentation
 ##### PUT
