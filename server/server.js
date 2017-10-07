@@ -21,6 +21,12 @@ app.put('/drive/speed/:speed', (req, res) => {
 })
 
 /* The interface is in degrees per second */
+app.put('/drive/speed/:speed0/:speed1', (req, res) => {
+    var turningSpeed = parseFloat(req.params.speed0) - parseFloat(req.params.speed1);
+	rover.turn(utils.toRadians(parseFloat(turningSpeed)));
+	res.sendStatus(200);
+})
+
 app.put('/drive/pivot/:pivot', (req, res) => {
 	rover.pivot(utils.toRadians(parseFloat(req.params.pivot)));
 	res.sendStatus(200);

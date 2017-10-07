@@ -14,6 +14,7 @@ class Rover {
 
 		this.drive = this.drive.bind(this);
 		this.pivot = this.pivot.bind(this);
+        this.turn = this.turn.bind(this);
 		this.stop = this.stop.bind(this);
 		this.getGps = this.getGps.bind(this);
 		this.update = this.update.bind(this);
@@ -28,6 +29,9 @@ class Rover {
 		this.speed = 0;
 		this.vtheta = speed;
 	}
+    turn(turningSpeed) {
+        this.vtheta = turningSpeed;
+    }
 
 	stop() {
 		this.speed = this.vtheta = 0;
