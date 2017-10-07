@@ -20,8 +20,8 @@ function render() {
 	.then(response => response.json())
 	.then(response => {
 		c = _.pickBy(response, (val, key) => val < 1e5)
-		if (!_.isEmpty(c))
-			console.log(c) // found an obstacle!
+		//if (!_.isEmpty(c))
+			//console.log(c) // found an obstacle!
 	})
 
 	fetch('http://localhost:8080/gps')
@@ -58,5 +58,7 @@ $('#backward').addEventListener('click', () => fetch('http://localhost:8080/driv
 $('#forward').addEventListener('click', () => fetch('http://localhost:8080/drive/speed/1', {method:'PUT'}))
 $('#pivot-left').addEventListener('click', () => fetch('http://localhost:8080/drive/pivot/-20', {method:'PUT'}))
 $('#pivot-right').addEventListener('click', () => fetch('http://localhost:8080/drive/pivot/20', {method:'PUT'}))
+$('#turn-left').addEventListener('click', () => fetch('http://localhost:8080/drive/speed/10/20', {method:'PUT'}))
+$('#turn-right').addEventListener('click', () => fetch('http://localhost:8080/drive/speed/20/10', {method:'PUT'}))
 
 
