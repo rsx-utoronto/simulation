@@ -41,7 +41,7 @@ class Rover {
 	getGps() {
 		return _.assignIn(
 			utils.toGPS(this.x, this.y, utils.utias),
-			{head: utils.toDegrees(this.theta)} // heading is in degrees
+			{heading: utils.toDegrees(this.theta)} // heading is in degrees
 		)
 	}
 

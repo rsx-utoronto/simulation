@@ -27,8 +27,8 @@ function render() {
 	fetch('/gps/')
 	.then(response => response.json())
 	.then(function(response) {
-		let dx = (response.lat - initGPS.lat) * 500000;
-		let dy = (response.lon - initGPS.lon) * 500000;
+		let dx = (response.latitude - initGPS.latitude) * 500000;
+		let dy = (response.longitude - initGPS.longitude) * 500000;
 
 		// erase gradually
 		ctx.fillStyle = 'rgba(255,255,255,0.03)';
@@ -40,7 +40,7 @@ function render() {
 			ctx.beginPath();
 			ctx.fillStyle = 'red'
 			obstacle.forEach(vertex => {
-				ctx.lineTo(200 + (vertex.lat - initGPS.lat) * 500000, 200 + (vertex.lon - initGPS.lon) * 500000);
+				ctx.lineTo(200 + (vertex.latitude - initGPS.latitude) * 500000, 200 + (vertex.longitude - initGPS.longitude) * 500000);
 			});
 			ctx.fill();
 		});
@@ -48,7 +48,7 @@ function render() {
 		// draw the box
 		ctx.fillStyle = 'green';
 		ctx.fillRect(200 + dx, 200 + dy, 10, 10);
-		ctx.fillRect(200 + dx + 20 * Math.cos(utils.toRadians(response.head)), 200 + dy + 20 * Math.sin(utils.toRadians(response.head)), 5, 5);
+		ctx.fillRect(200 + dx + 20 * Math.cos(utils.toRadians(response.heading)), 200 + dy + 20 * Math.sin(utils.toRadians(response.heading)), 5, 5);
 		window.requestAnimationFrame(render)
 	});
 }

@@ -8,12 +8,12 @@ function toRadians (angle) {
 
 function toGPS (x, y, origin) {
 	return {
-		lat: 1 / 111000 * x + origin.lat,
-		lon: 1 / 111000 * y + origin.lon
+		latitude: 1 / 111000 * x + origin.latitude,
+		longitude: 1 / 111000 * y + origin.longitude
 	}
 }
 
-utias = {lat: -79.4655, lon: 43.7819};
+utias = {latitude: -79.4655, longitude: 43.7819};
 
 if (typeof(module) !== "undefined")
 	module.exports = { toDegrees, toRadians, toGPS, utias } // for node
