@@ -64,6 +64,7 @@ app.get('/drive/tennis-ball', (req, res) => {
     var angle = tennis_ball.getAngle(rover, 1000);
     var distance = tennis_ball.getDistance(rover, 1000);
     console.log('Angle to tennis ball:', utils.toDegrees(angle));
+    console.log('Distance to tennis ball:', distance, 'm');
     console.log(' ');
     res.json(angle);
 })
