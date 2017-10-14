@@ -1,7 +1,6 @@
 var _ = require('lodash');
 
 class Obstacle {
-
 	constructor(vertices) {
 		this.vertices = vertices;  // should be stored in metres relative to the origin
 		this.getDistance = this.getDistance.bind(this);

@@ -2,11 +2,12 @@ var express = require('express');
 var _ = require('lodash');
 var Rover = require('./rover');
 var Obstacle = require('./obstacle');
+var Ball = require('./ball');
 var utils = require('../common/utils');
 var cors = require('cors');
-
 let app = express();
 let rover = new Rover(10, 10);
+let tennis_ball = new Ball({x: 50, y: 50}, 5);
 let obstacles = [new Obstacle([
 	{x: 10, y: 30},
 	{x: 40, y: 50},
@@ -42,6 +43,11 @@ app.put('/drive/stop', (req, res) => {
 	res.sendStatus(200);
 })
 
+app.put('/ebrake', (req, res) => {
+    rover.set_ebrake();
+	res.sendStatus(200);
+})
+
 app.get('/gps', (req, res) => {
 	res.json(rover.getGps());
 })
@@ -54,11 +60,25 @@ app.get('/lidar', (req, res) => {
 	);
 })
 
+app.get('/drive/tennis-ball', (req, res) => {
+    var angle = tennis_ball.getAngle(rover, 1000);
+    var distance = tennis_ball.getDistance(rover, 1000);
+    console.log('Angle to tennis ball:', utils.toDegrees(angle));
+    console.log(' ');
+    res.json(angle);
+})
+
 /* ONLY USE FOR DRAWING */
 app.get('/private/obstacles', (req, res) => {
 	res.json(obstacles.map(
 		obstacle => obstacle.vertices.map(({x, y}) => utils.toGPS(x, y, utils.utias))
 	))
+})
+
+app.get('/private/ball', (req, res) => {
+    //The coordinates of the ball need to be returned and not the x,y value of the ball
+    var gpsBall = {gps: utils.toGPS(tennis_ball.center.x, tennis_ball.center.y, utils.utias), radius: tennis_ball.radius}
+	res.json(gpsBall);
 })
 
 // serve static files
