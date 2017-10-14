@@ -7,7 +7,7 @@ var utils = require('../common/utils');
 var cors = require('cors');
 let app = express();
 let rover = new Rover(10, 10);
-let tennis_ball = new Ball({x: 500, y: 100}, 5);
+let tennis_ball = new Ball({x: 50, y: 50}, 5);
 let obstacles = [new Obstacle([
 	{x: 10, y: 30},
 	{x: 40, y: 50},
@@ -60,6 +60,13 @@ app.get('/lidar', (req, res) => {
 	);
 })
 
+app.get('/drive/tennis-ball', (req, res) => {
+    var angle = tennis_ball.getAngle(rover, 1000);
+    console.log(utils.toDegrees(angle));
+    console.log(' ');
+    res.json(angle);
+})
+
 /* ONLY USE FOR DRAWING */
 app.get('/private/obstacles', (req, res) => {
 	res.json(obstacles.map(
@@ -68,7 +75,9 @@ app.get('/private/obstacles', (req, res) => {
 })
 
 app.get('/private/ball', (req, res) => {
-	res.json(tennis_ball);
+    //The coordinates of the ball need to be returned and not the x,y value of the ball
+    var gpsBall = {gps: utils.toGPS(tennis_ball.center.x, tennis_ball.center.y, utils.utias), radius: tennis_ball.radius}
+	res.json(gpsBall);
 })
 
 // serve static files

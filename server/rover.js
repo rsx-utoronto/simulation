@@ -61,6 +61,9 @@ class Rover {
 		this.x += Math.cos(this.theta) * this.speed * this.dt;
 		this.y += Math.sin(this.theta) * this.speed * this.dt;
 		this.theta += this.vtheta * this.dt;
+        //Making sure angle isn't greater or less than 2pi, otherwise it messes up angle calculations later
+        if(this.theta > 2 * Math.PI) this.theta = this.theta - 2*Math.PI;
+        if(this.theta < -(2*Math.PI)) this.theta = this.theta + 2*Math.PI;
 	}
 }
 

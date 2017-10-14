@@ -1,6 +1,8 @@
 $ = document.querySelector.bind(document);
 let noop = ()=>{};
 
+var scaleFactor = 200;
+
 var canvas = document.getElementById('cvs');
 var ctx = canvas.getContext('2d');
 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -27,10 +29,11 @@ function render() {
     fetch('/private/ball')
     .then(response => response.json())
     .then(response => {
-         let center = response.center
+         let dx = (response.gps.lat - initGPS.lat) * 500000;
+		 let dy = (response.gps.lon - initGPS.lon) * 500000;
          let radius = response.radius
          ctx.beginPath();
-         ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI);
+         ctx.arc(scaleFactor + dx, scaleFactor+ dy, radius, 0, 2 * Math.PI);
          ctx.stroke();
         ctx.fillStyle = 'yellow'
          ctx.fill();
@@ -53,15 +56,15 @@ function render() {
 			ctx.beginPath();
 			ctx.fillStyle = 'red'
 			obstacle.forEach(vertex => {
-				ctx.lineTo(200 + (vertex.lat - initGPS.lat) * 500000, 200 + (vertex.lon - initGPS.lon) * 500000);
+				ctx.lineTo(scaleFactor + (vertex.lat - initGPS.lat) * 500000, scaleFactor + (vertex.lon - initGPS.lon) * 500000);
 			});
 			ctx.fill();
 		});
 
 		// draw the box
 		ctx.fillStyle = 'green';
-		ctx.fillRect(200 + dx, 200 + dy, 10, 10);
-		ctx.fillRect(200 + dx + 20 * Math.cos(utils.toRadians(response.head)), 200 + dy + 20 * Math.sin(utils.toRadians(response.head)), 5, 5);
+		ctx.fillRect(scaleFactor + dx, scaleFactor + dy, 10, 10);
+		ctx.fillRect(scaleFactor + dx + 20 * Math.cos(utils.toRadians(response.head)), scaleFactor + dy + 20 * Math.sin(utils.toRadians(response.head)), 5, 5);
 		window.requestAnimationFrame(render)
 	});
 }
@@ -74,6 +77,6 @@ $('#pivot-left').addEventListener('click', () => fetch('/drive/pivot/-20', {meth
 $('#pivot-right').addEventListener('click', () => fetch('/drive/pivot/20', {method:'PUT'}))
 $('#turn-left').addEventListener('click', () => fetch('/drive/speed/1/2', {method:'PUT'}))
 $('#turn-right').addEventListener('click', () => fetch('/drive/speed/2/1', {method:'PUT'}))
-
+$('#tennis-ball').addEventListener('click', () => fetch('/drive/tennis-ball', {method:'GET'}))
 
 
