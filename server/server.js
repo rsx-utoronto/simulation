@@ -6,6 +6,7 @@ var Ball = require('./ball');
 var utils = require('../common/utils');
 var cors = require('cors');
 let app = express();
+var speedScaleFactor = 1/30;
 let rover = new Rover(10, 10);
 let tennis_ball = new Ball({x: 50, y: 50}, 5);
 let obstacles = [new Obstacle([
@@ -17,14 +18,14 @@ let obstacles = [new Obstacle([
 app.use(cors())
 
 app.put('/drive/speed/:speed', (req, res) => {
-	rover.drive(parseFloat(req.params.speed));
+	rover.drive(parseFloat(req.params.speed)*speedScaleFactor);
 	res.sendStatus(200);
 })
 
 /* The interface is in degrees per second */
 app.put('/drive/speed/:speed0/:speed1', (req, res) => {
-    var leftWheelSpeed = parseFloat(req.params.speed0);
-    var rightWheelSpeed = parseFloat(req.params.speed1);
+    var leftWheelSpeed = parseFloat(req.params.speed0)*speedScaleFactor;
+    var rightWheelSpeed = parseFloat(req.params.speed1)*speedScaleFactor;
     var forwardVelocity = 0.5 * (leftWheelSpeed + rightWheelSpeed);  
     var turningSpeed = 20*(leftWheelSpeed - rightWheelSpeed);
     rover.drive(forwardVelocity);
@@ -66,7 +67,8 @@ app.get('/drive/tennis-ball', (req, res) => {
     console.log('Angle to tennis ball:', utils.toDegrees(angle));
     console.log('Distance to tennis ball:', distance, 'm');
     console.log(' ');
-    res.json(angle);
+    var info = {distance: distance, angle: angle};
+    res.json(info);
 })
 
 /* ONLY USE FOR DRAWING */

@@ -24,6 +24,9 @@ class Ball {
         
         var distance = EARTH_RADIUS_IN_METERS * Math.sqrt(Math.pow(y2-y1, 2) + Math.pow(x2-x1, 2));
         
+        console.log('Ball:' , this.center.x, ',', this.center.y);
+        console.log('Robot:', robot.x, ',', robot.y);
+        
         return distance
     }
     

@@ -1,6 +1,7 @@
 var utils = require('../common/utils');
 var _ = require('lodash')
 
+
 class Rover {
 	constructor(x, y) {
 		this.x = x; // these dimensions are in metres

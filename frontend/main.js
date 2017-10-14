@@ -71,12 +71,12 @@ function render() {
 
 $('#ebrake').addEventListener('click', () => fetch('/ebrake', {method:'PUT'}))
 $('#stop').addEventListener('click', () => fetch('/drive/stop', {method:'PUT'}))
-$('#backward').addEventListener('click', () => fetch('/drive/speed/-1', {method:'PUT'}))
-$('#forward').addEventListener('click', () => fetch('/drive/speed/1', {method:'PUT'}))
+$('#backward').addEventListener('click', () => fetch('/drive/speed/-60', {method:'PUT'}))
+$('#forward').addEventListener('click', () => fetch('/drive/speed/60', {method:'PUT'}))
 $('#pivot-left').addEventListener('click', () => fetch('/drive/pivot/-20', {method:'PUT'}))
 $('#pivot-right').addEventListener('click', () => fetch('/drive/pivot/20', {method:'PUT'}))
-$('#turn-left').addEventListener('click', () => fetch('/drive/speed/1/2', {method:'PUT'}))
-$('#turn-right').addEventListener('click', () => fetch('/drive/speed/2/1', {method:'PUT'}))
+$('#turn-left').addEventListener('click', () => fetch('/drive/speed/30/60', {method:'PUT'}))
+$('#turn-right').addEventListener('click', () => fetch('/drive/speed/60/30', {method:'PUT'}))
 $('#tennis-ball').addEventListener('click', () => fetch('/drive/tennis-ball', {method:'GET'}))
 
 
