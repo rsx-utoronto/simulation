@@ -1,0 +1,56 @@
+.header{
+    font: bold 34px "Century Schoolbook", Georgia, Times, serif;
+    color: #333;
+    line-height: 90%;
+    margin: .2em 0 .4em 0;
+    letter-spacing: -2px;
+}
+
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    border-radius: 10px;
+    color: white;
+    padding: 12px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.button1 {
+    background-color: #4CAF50;
+    color: white;
+    border: 2px solid #4CAF50;
+}
+
+.button1:hover {
+    background-color: white;
+    color: black;
+}
+
+.button2 {
+    background-color: #f44336;
+    color: white;
+    border: 2px solid #f44336;
+}
+
+.button3:hover {
+    background-color: white;
+    color: black;
+}
+
+.button3 {
+    background-color: #fcda00;
+    color: white;
+    border: 2px solid #fcda00;
+}
+
+.button2:hover {
+    background-color: white;
+    color: black;
+}
