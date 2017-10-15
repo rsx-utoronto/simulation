@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "description": "simulation of the rover to enable fast prototyping of the ai",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node main.js"
+    "start": "node server/server.js"
   },
   "author": "rsx-utoronto",
   "license": "ISC",

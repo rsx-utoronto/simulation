@@ -88,7 +88,7 @@ app.get('/private/ball', (req, res) => {
 app.use(express.static('.'));
 
 app.listen(8080, () => {
-	console.log('App is listening on port 8080')
+	console.log('App is listening at http://localhost:8080/frontend');
 })
 
 setInterval(rover.update, 1 / rover.dt);

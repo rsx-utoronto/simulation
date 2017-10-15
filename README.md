@@ -11,7 +11,7 @@ Any other client simply needs to make API calls to `localhost:8080`. Multiple cl
 - `git clone https://github.com/rsx-utoronto/simulation.git`
 - `npm install`
 - `cd simulation`
-- `node server/server.js`
+- `npm start`
 
 In your browser, navigate to `localhost:8080/frontend`
 
