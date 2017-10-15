@@ -7,15 +7,15 @@ function toRadians (angle) {
 }
 
 function toGPS (x, y, origin) {
-	return {
-		latitude: 1 / 111000 * x + origin.latitude,
-		longitude: 1 / 111000 * y + origin.longitude
-	}
+    return {
+        latitude: 1 / 111000 * x + origin.latitude,
+        longitude: 1 / 111000 * y + origin.longitude
+    }
 }
 
 utias = {latitude: -79.4655, longitude: 43.7819};
 
 if (typeof(module) !== "undefined")
-	module.exports = { toDegrees, toRadians, toGPS, utias } // for node
+    module.exports = { toDegrees, toRadians, toGPS, utias } // for node
 else
-	utils = { toDegrees, toRadians, toGPS, utias }; // for browser
+    utils = { toDegrees, toRadians, toGPS, utias }; // for browser

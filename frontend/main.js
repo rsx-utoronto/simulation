@@ -8,65 +8,65 @@ var ctx = canvas.getContext('2d');
 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 var initGPS, _obstacles;
+
 Promise.all(['/gps/', '/private/obstacles/'].map(_.unary(fetch)))
 .then(responses =>
-	Promise.all(responses.map(x => x.json())))
+    Promise.all(responses.map(x => x.json())))
 .then(([gps, _obstacles]) => {
-	initGPS = gps; // first GPS so we have a reference to draw from
-	obstacles = _obstacles;
+    initGPS = gps; // first GPS so we have a reference to draw from
+    obstacles = _obstacles;
 })
 .then(x => requestAnimationFrame(render));
 
 function render() {
-	fetch('/lidar/')
-	.then(response => response.json())
-	.then(response => {
-		c = _.pickBy(response, (val, key) => val < 1e5)
-		//if (!_.isEmpty(c))
-			//console.log(c) // found an obstacle!
-	})
-    
+    fetch('/lidar/')
+    .then(response => response.json())
+    .then(response => {
+        c = _.pickBy(response, (val, key) => val < 1e5)
+        //if (!_.isEmpty(c))
+            //console.log(c) // found an obstacle!
+    })
+
     fetch('/private/ball')
     .then(response => response.json())
     .then(response => {
-         let dx = (response.gps.latitude - initGPS.latitude) * 500000;
-		 let dy = (response.gps.longitude - initGPS.longitude) * 500000;
-         let radius = response.radius
-         ctx.beginPath();
-         ctx.arc(scaleFactor + dx, scaleFactor+ dy, radius, 0, 2 * Math.PI);
-         ctx.stroke();
+        let dx = (response.gps.latitude - initGPS.latitude) * 500000;
+        let dy = (response.gps.longitude - initGPS.longitude) * 500000;
+        let radius = response.radius
+        ctx.beginPath();
+        ctx.arc(scaleFactor + dx, scaleFactor+ dy, radius, 0, 2 * Math.PI);
+        ctx.stroke();
         ctx.fillStyle = 'yellow'
-         ctx.fill();
+        ctx.fill();
     });
 
-	fetch('/gps/')
-	.then(response => response.json())
-	.then(function(response) {
-		let dx = (response.latitude - initGPS.latitude) * 500000;
-		let dy = (response.longitude - initGPS.longitude) * 500000;
+    fetch('/gps/')
+    .then(response => response.json())
+    .then(function(response) {
+        let dx = (response.latitude - initGPS.latitude) * 500000;
+        let dy = (response.longitude - initGPS.longitude) * 500000;
 
-		// erase gradually
-		ctx.fillStyle = 'rgba(255,255,255,0.03)';
-		ctx.fillRect(0, 0, canvas.width, canvas.height);
-		ctx.fill();
-        
+        // erase gradually
+        ctx.fillStyle = 'rgba(255,255,255,0.03)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fill();
 
-		// draw obstacles
-		obstacles.forEach(obstacle => {
-			ctx.beginPath();
-			ctx.fillStyle = 'red'
-			obstacle.forEach(vertex => {
-				ctx.lineTo(scaleFactor + (vertex.latitude - initGPS.latitude) * 500000, scaleFactor + (vertex.longitude - initGPS.longitude) * 500000);
-			});
-			ctx.fill();
-		});
+        // draw obstacles
+        obstacles.forEach(obstacle => {
+            ctx.beginPath();
+            ctx.fillStyle = 'red'
+            obstacle.forEach(vertex => {
+                ctx.lineTo(scaleFactor + (vertex.latitude - initGPS.latitude) * 500000, scaleFactor + (vertex.longitude - initGPS.longitude) * 500000);
+            });
+            ctx.fill();
+        });
 
-		// draw the box
-		ctx.fillStyle = 'green';
-		ctx.fillRect(scaleFactor + dx, scaleFactor + dy, 10, 10);
-		ctx.fillRect(scaleFactor + dx + 20 * Math.cos(utils.toRadians(response.heading)), scaleFactor + dy + 20 * Math.sin(utils.toRadians(response.heading)), 5, 5);
-		window.requestAnimationFrame(render)
-	});
+        // draw the box
+        ctx.fillStyle = 'green';
+        ctx.fillRect(scaleFactor + dx, scaleFactor + dy, 10, 10);
+        ctx.fillRect(scaleFactor + dx + 20 * Math.cos(utils.toRadians(response.heading)), scaleFactor + dy + 20 * Math.sin(utils.toRadians(response.heading)), 5, 5);
+        window.requestAnimationFrame(render)
+    });
 }
 
 $('#ebrake').addEventListener('click', () => fetch('/ebrake', {method:'PUT'}))
