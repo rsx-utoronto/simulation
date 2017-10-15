@@ -22,7 +22,6 @@ app.put('/drive/speed/:speed', (req, res) => {
 	res.sendStatus(200);
 })
 
-/* The interface is in degrees per second */
 app.put('/drive/speed/:speed0/:speed1', (req, res) => {
     var leftWheelSpeed = parseFloat(req.params.speed0)*speedScaleFactor;
     var rightWheelSpeed = parseFloat(req.params.speed1)*speedScaleFactor;
