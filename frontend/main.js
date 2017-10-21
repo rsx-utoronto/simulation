@@ -47,7 +47,7 @@ function render() {
         let dy = (response.longitude - initGPS.longitude) * 500000;
 
         // erase gradually
-        ctx.fillStyle = 'rgba(255,255,255,0.03)';
+        ctx.fillStyle = 'rgba(255,255,255,0.04)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fill();
 
@@ -62,9 +62,45 @@ function render() {
         });
 
         // draw the box
-        ctx.fillStyle = 'green';
+        ctx.fillStyle = 'black';
         ctx.fillRect(scaleFactor + dx, scaleFactor + dy, 10, 10);
-        ctx.fillRect(scaleFactor + dx + 20 * Math.cos(utils.toRadians(response.heading)), scaleFactor + dy + 20 * Math.sin(utils.toRadians(response.heading)), 5, 5);
+        
+        // Drawing an arrow and rotating it based on the direction
+        var startingX = scaleFactor + dx + 20 * Math.cos(utils.toRadians(response.heading));
+        var startingY = scaleFactor + dy + 20 * Math.sin(utils.toRadians(response.heading));
+        var triangleWidth = 10;
+        var rotationStartingAngle = utils.toRadians(270);
+        
+        // first save the untranslated/unrotated context
+        ctx.save();
+
+        ctx.beginPath();
+        // move the rotation point to the center of the rect
+        ctx.translate( startingX+triangleWidth/2, startingY+triangleWidth/2 );
+        // rotate the rect
+        ctx.rotate(utils.toRadians(response.heading)+ rotationStartingAngle);
+
+        // draw the rect on the transformed context
+        // Note: after transforming [0,0] is visually [x,y]
+        //       so the rect needs to be offset accordingly when drawn
+        translatedStartingPoint = -triangleWidth/2;
+        
+        //Drawing the actual arrow shape
+        ctx.beginPath();
+        ctx.moveTo(translatedStartingPoint, translatedStartingPoint);
+        ctx.lineTo(translatedStartingPoint + 2*triangleWidth/5, translatedStartingPoint);
+        ctx.lineTo(translatedStartingPoint + 2*triangleWidth/5, translatedStartingPoint - triangleWidth/2);
+        ctx.lineTo(translatedStartingPoint + 3*triangleWidth/5, translatedStartingPoint - triangleWidth/2);
+        ctx.lineTo(translatedStartingPoint + 3*triangleWidth/5, translatedStartingPoint);
+        ctx.lineTo(translatedStartingPoint + triangleWidth, translatedStartingPoint);
+        ctx.lineTo(translatedStartingPoint + triangleWidth, translatedStartingPoint);
+        ctx.lineTo(translatedStartingPoint + triangleWidth/2, translatedStartingPoint + triangleWidth);
+        ctx.fillStyle = "green";
+        ctx.fill();
+
+        // restore the context to its untranslated/unrotated state
+        ctx.restore();
+
         window.requestAnimationFrame(render)
     });
 }

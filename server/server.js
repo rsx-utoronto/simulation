@@ -7,6 +7,7 @@ var utils = require('../common/utils');
 var cors = require('cors');
 let app = express();
 var speedScaleFactor = 1/30;
+var SENSOR_RANGE = 60; //Range is in meters
 let rover = new Rover(10, 10);
 let tennis_ball = new Ball({x: 50, y: 50}, 5);
 let obstacles = [new Obstacle([
@@ -61,10 +62,14 @@ app.get('/lidar', (req, res) => {
 })
 
 app.get('/drive/tennis-ball', (req, res) => {
-    var angle = tennis_ball.getAngle(rover, 1000);
-    var distance = tennis_ball.getDistance(rover, 1000);
-    console.log('Angle to tennis ball:', utils.toDegrees(angle));
-    console.log('Distance to tennis ball:', distance, 'm');
+    var angle = tennis_ball.getAngle(rover, SENSOR_RANGE);
+    var distance = tennis_ball.getDistance(rover, SENSOR_RANGE);
+    if(angle != -1){
+        console.log('Angle to tennis ball:', Math.round(utils.toDegrees(angle) * 10) / 10, "degrees");
+        console.log('Distance to tennis ball:', Math.round(distance * 1000) / 1000, 'm');
+    } else {
+        console.log('ERROR tennis ball out of sensor range. Max range is:', SENSOR_RANGE, 'm');
+    }
     console.log(' ');
     var info = {distance: distance, angle: angle};
     res.json(info);

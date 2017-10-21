@@ -1,6 +1,6 @@
 var _ = require('lodash');
 var utils = require('../common/utils');
-var EARTH_RADIUS_IN_METERS = 6372797.560856;
+
 
 class Ball {
     constructor(center, radius) {
@@ -15,17 +15,9 @@ class Ball {
         var robotGPS = utils.toGPS(robot.x, robot.y, utils.utias);
         var ballGPS = utils.toGPS(this.center.x, this.center.y, utils.utias);
 
-        var y1 = utils.toRadians(robotGPS.latitude);
-        var y2 = utils.toRadians(ballGPS.latitude);
-        var latavg = utils.toRadians((robotGPS.latitude + ballGPS.latitude) / 2)
-
-        var x1 = utils.toRadians(robotGPS.longitude * Math.cos(latavg));
-        var x2 = utils.toRadians(ballGPS.longitude * Math.cos(latavg));
-
-        var distance = EARTH_RADIUS_IN_METERS * Math.sqrt(Math.pow(y2-y1, 2) + Math.pow(x2-x1, 2));
-
-        console.log('Ball:' , this.center.x, ',', this.center.y);
-        console.log('Robot:', robot.x, ',', robot.y);
+        var distance = utils.getDistanceGPS(robotGPS, ballGPS);
+        
+        if(distance > sensorRange) distance = -1;
 
         return distance
     }
@@ -43,6 +35,12 @@ class Ball {
         if(roverAngle < -Math.PI) roverAngle = roverAngle + (2*Math.PI);
 
         angle = angle - roverAngle;
+        
+        if(angle  > Math.PI) angle = angle - (2*Math.PI);
+        if(angle < -Math.PI) angle = angle + (2*Math.PI);
+        
+        if(this.getDistance(robot, sensorRange) == -1) angle = -1;
+        
         return angle;
     }
 
